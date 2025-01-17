@@ -1,0 +1,18 @@
+FROM ubuntu:latest
+
+  RUN apt-get update && \
+      apt-get install -y \
+      gnome-shell \
+      gdm3 \
+      tigervnc-standalone-server \
+      x11-xserver-utils \
+      && rm -rf /var/lib/apt/lists/*
+
+      # Set VNC password (replace with a strong password)
+      RUN echo "your_vnc_password" | vncpasswd -s /home/user/.vnc/passwd
+
+      # Expose VNC port
+      EXPOSE 5901
+
+      # Start VNC server and GNOME
+      CMD ["/bin/bash", "-c", "x0vncserver -display :1 -passwordfile /home/user/.vnc/passwd -forever -geometry 1280x720 & exec gdm3"]
